@@ -1,0 +1,5 @@
+routes
+/api/users/signup           POST    {email:string, password:string}     Signup for account
+/api/users/signin           POST    {email:string, password:string}     Signin to existing
+/api/users/signout          POST    {}                                  Signout
+/api/users/currentuser      GET                                         Return info about User
