@@ -1,7 +1,11 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { validateRequest } from '../middlware/validate-request';
+import jwt from 'jsonwebtoken';
 
+import { User } from '../models/user';
+import { validateRequest } from '../middlware/validate-request';
+import { BadRequestError } from '../errors/bad-request-error';
+import { Password } from '../services/password';
 const router = express.Router();
 
 router.post(
@@ -11,8 +15,43 @@ router.post(
 		body('password').trim().notEmpty().withMessage('Password is Required'),
 	],
 	validateRequest,
-	(req: Request, res: Response) => {
+	async (req: Request, res: Response) => {
+		const { email, password } = req.body;
 
+		const existingUser = await User.findOne({ email });
+		if (!existingUser) {
+			throw new BadRequestError('Invalid Credentials');
+		}
+
+		// use compare method pass stored password
+		const passwordsMatch = await Password.compare(
+			existingUser.password,
+			password
+		);
+
+		if (!passwordsMatch) {
+			throw new BadRequestError('Invaild Credentials');
+		}
+
+		// Generate JSON Web Token,
+		const userJwt = jwt.sign(
+			{
+				id: existingUser.id,
+				email: existingUser.email
+			},
+			process.env.JWT_KEY!
+		);
+
+		// Store it on session object
+		req.session = {
+			// isNew: true,
+			// isChanged: false,
+			// isPopulated:false,
+			jwt: userJwt,
+		};
+
+		// Send Response
+		res.status(200).send(existingUser);
 	}
 );
 
