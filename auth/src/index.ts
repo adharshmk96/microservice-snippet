@@ -13,6 +13,7 @@ const start = async () => {
 		});
 		console.log('Connected to MongoDB');
 	} catch (err) {
+		console.log("This is happenning")
 		console.error(err);
 	}
 
