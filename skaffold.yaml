@@ -5,6 +5,8 @@ deploy:
     manifests:
       - ./infra/k8s/*
 build:
+  tagPolicy:
+    sha256: {}
   # local:
   #   push: false
   artifacts:
