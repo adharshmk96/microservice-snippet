@@ -22,7 +22,7 @@ export default () => {
 
     return (
         <form onSubmit={onSubmit}>
-            <h1>Sign up</h1>
+            <h1>Sign in</h1>
             <div className="form-group">
                 <label>Email Address</label>
                 <input value={email} onChange={e => setEmail(e.target.value)} type="email" className="form-control" autoComplete="off" />

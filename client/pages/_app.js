@@ -1,12 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import buildClient from '../api/build-client';
+import Header from '../component/header';
 // doubt if using redux, do here ?
 
 const AppComponent = ({ Component, pageProps, currentUser }) => {
     return (
         <div>
-            <h1>{currentUser.email}</h1>
-        <Component {...pageProps} />
+            <Header currentUser={currentUser} />
+            <Component {...pageProps} />
         </div>
     )
 }

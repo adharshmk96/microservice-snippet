@@ -1,11 +1,9 @@
 import buildClient from '../api/build-client';
 import axios from 'axios';
 
-
 const LandingPage = ({ currentUser }) => {
 
-    return currentUser ? <h1>Signed in</h1> : <h1>Sign out</h1>
-
+    return currentUser ? <h1>Signed in</h1> : <h1>Signed out</h1>
 
 }
 
