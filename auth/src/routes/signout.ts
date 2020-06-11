@@ -1,6 +1,6 @@
 import express from 'express';
-import { currentUser } from '../middlware/current-user';
-import { requrieAuth } from '../middlware/require-auth';
+import { currentUser } from '@adh-learns/common';
+import { requrieAuth } from '@adh-learns/common';
 
 const router = express.Router();
 

@@ -7,8 +7,8 @@ import { currentUserRouter } from './routes/current-user';
 import { signinRouter } from './routes/signin';
 import { signupRouter } from './routes/signup';
 import { signoutRouter } from './routes/signout';
-import { errorHandler } from './middlware/error-handler';
-import { NotFoundError } from './errors/not-found-error';
+import { errorHandler } from '@adh-learns/common';
+import { NotFoundError } from '@adh-learns/common';
 
 const app = express();
 app.set('trust proxy', true);
