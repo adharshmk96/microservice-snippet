@@ -2,11 +2,12 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../app';
+import jwt from 'jsonwebtoken';
 
 declare global {
 	namespace NodeJS {
 		interface Global {
-			signin(): Promise<string[]>;
+			signin(): string[];
 		}
 	}
 }
@@ -38,19 +39,25 @@ afterAll(async () => {
 	await mongoose.connection.close();
 });
 
-global.signin = async () => {
-	const email = 'test@mail.com';
-	const password = 'password';
+global.signin = () => {
+	// Build a JWT Payload. { id, email, iat }
+	const payload = {
+		id: new mongoose.Types.ObjectId().toHexString(),
+		email: 'someone@mail.com',
+	};
 
-	const response = await request(app)
-		.post('/api/users/signup')
-		.send({
-			email,
-			password,
-		})
-		.expect(201);
+	// Create JWT
+	const token = jwt.sign(payload, process.env.JWT_KEY!);
 
-	const cookie = response.get('Set-Cookie');
+	// Build a session object { jwt: MY_JWT }
+	const session = { jwt: token };
 
-	return cookie;
+	// Turn the session into JSON
+	const sessoinJSON = JSON.stringify(session);
+
+	// Take JSON Encode as base64
+	const base64 = Buffer.from(sessoinJSON).toString('base64');
+
+	// Return the Cookie as Encoded
+	return [`express:sess=${base64}`];
 };
