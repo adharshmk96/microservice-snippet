@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app';
-import { response } from 'express';
+
+
 
 const createTicket = async () => {
 	const title = 'some';

@@ -4,7 +4,7 @@ import { get } from 'mongoose';
 class NatsWrapper {
 	private _client?: Stan;
 
-	get client() {
+	get client(): Stan | never {
 		if (!this._client) {
 			throw new Error("Can't access NATS Client before connecting");
 		}
