@@ -12,7 +12,7 @@ spec:
       labels:
         app: tickets
     spec:
-      containers: 
+      containers:
         - name: tickets
           image: adharshmk96/tickets
           env:
@@ -22,8 +22,15 @@ spec:
                   name: jwt-secret
                   key: JWT_KEY
             - name: MONGO_URI
-              value: 'mongodb://tickets-mongo-srv:27017/tickets'
-
+              value: "mongodb://tickets-mongo-srv:27017/tickets"
+            - name: NATS_URI
+              value: "http://nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: ticketing
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
 
 ---
 apiVersion: v1

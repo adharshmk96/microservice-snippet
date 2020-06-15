@@ -9,6 +9,15 @@ const start = async () => {
 	if (!process.env.MONGO_URI) {
 		throw new Error('MONGO_URI is not Defined');
 	}
+	if (!process.env.NATS_CLUSTER_ID) {
+		throw new Error('NATS_CLUSTER_ID is not Defined');
+	}
+	if (!process.env.NATS_CLIENT_ID) {
+		throw new Error('NATS_CLIENT_ID is not Defined');
+	}
+	if (!process.env.NATS_URI) {
+		throw new Error('NATS_URI is not Defined');
+	}
 	try {
 		await mongoose.connect(process.env.MONGO_URI, {
 			useNewUrlParser: true,
@@ -17,7 +26,11 @@ const start = async () => {
 		});
 		console.log('Connected to MongoDB');
 
-		await natsWrapper.connect('ticketing', 'asdf', 'http://nats-srv:4222');
+		await natsWrapper.connect(
+			process.env.NATS_CLUSTER_ID,
+			process.env.NATS_CLIENT_ID,
+			process.env.NATS_URI
+		);
 		natsWrapper.client.on('close', () => {
 			console.log('NATS connection closed');
 			process.exit();
