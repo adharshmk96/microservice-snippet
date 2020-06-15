@@ -1,5 +1,6 @@
 import { app } from './app';
 import mongoose from 'mongoose';
+import { natsWrapper } from './nats-wrapper';
 
 const start = async () => {
 	if (!process.env.JWT_KEY) {
@@ -15,8 +16,17 @@ const start = async () => {
 			useCreateIndex: true,
 		});
 		console.log('Connected to MongoDB');
+
+		await natsWrapper.connect('ticketing', 'asdf', 'http://nats-srv:4222');
+		natsWrapper.client.on('close', () => {
+			console.log('NATS connection closed');
+			process.exit();
+		});
+
+		process.on('SIGINT', () => natsWrapper.client.close());
+		process.on('SIGTERM', () => natsWrapper.client.close());
 	} catch (err) {
-		console.log("This is happenning")
+		console.log('This is happenning');
 		console.error(err);
 	}
 
