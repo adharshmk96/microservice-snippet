@@ -1,9 +1,12 @@
 import express, { Request, Response } from 'express';
 import { requrieAuth, validateRequest } from '@adh-learns/common';
 import { body } from 'express-validator';
-import { Ticket } from '../models/ticket';
 import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
 import { natsWrapper } from '../nats-wrapper';
+
+// Model
+import { Ticket } from '../models/ticket';
+
 
 const router = express.Router();
 
