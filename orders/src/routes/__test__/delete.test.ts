@@ -4,10 +4,12 @@ import { Ticket } from '../../models/ticket';
 import { OrderStatus } from '@adh-learns/common';
 import { Order } from '../../models/order';
 import { natsWrapper } from '../../nats-wrapper';
+import mongoose, { mongo } from 'mongoose';
 
 it('fetches the order', async () => {
 	// Create a ticket
 	const ticket = Ticket.build({
+		id: new mongoose.Types.ObjectId().toHexString(),
 		title: 'concert',
 		price: 20,
 	});
@@ -35,6 +37,7 @@ it('fetches the order', async () => {
 it('returns error if another user fetches data', async () => {
 	// Create a ticket
 	const ticket = Ticket.build({
+		id: new mongoose.Types.ObjectId().toHexString(),
 		title: 'concert',
 		price: 20,
 	});
@@ -60,6 +63,7 @@ it('returns error if another user fetches data', async () => {
 it('Emits an order cancelled order', async () => {
 	// Create a ticket
 	const ticket = Ticket.build({
+		id: new mongoose.Types.ObjectId().toHexString(),
 		title: 'concert',
 		price: 20,
 	});
