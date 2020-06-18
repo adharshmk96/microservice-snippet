@@ -17,6 +17,7 @@ interface OrderDoc extends mongoose.Document {
 	expiresAt: Date;
 	ticket: TicketDoc;
 	createdAt: string;
+	version: number;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {

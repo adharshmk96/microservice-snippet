@@ -7,7 +7,6 @@ import { natsWrapper } from '../nats-wrapper';
 // Model
 import { Ticket } from '../models/ticket';
 
-
 const router = express.Router();
 
 router.post(
@@ -35,6 +34,7 @@ router.post(
 			title: ticket.title,
 			price: ticket.price,
 			userId: ticket.userId,
+			version: ticket.version,
 		});
 		res.status(201).send(ticket);
 	}
