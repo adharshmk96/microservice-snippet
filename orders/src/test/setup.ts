@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
 jest.mock('../nats-wrapper.ts');
+// jest.mock('../nats-wrapper.ts');
 
 declare global {
 	namespace NodeJS {
