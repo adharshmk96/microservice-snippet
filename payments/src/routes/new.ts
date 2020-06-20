@@ -10,6 +10,9 @@ import {
 	OrderStatus,
 	BadRequestError,
 } from '@adh-learns/common';
+import { Payment } from '../models/payment';
+import { PaymentCreatedPublisher } from '../events/publishers/payment-created-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -32,14 +35,27 @@ router.post(
 			throw new BadRequestError('The Order Expired !');
 		}
 
-		await stripe.charges.create({
+		const charge = await stripe.charges.create({
 			currency: 'inr',
 			amount: order.price * 100,
 			source: token,
 			description: 'This is a Test payment, not even real',
 		});
 
-		res.status(201).send({ success: true });
+		const payment = Payment.build({
+			orderId,
+			stripeId: charge.id,
+		});
+
+		await payment.save();
+
+		await new PaymentCreatedPublisher(natsWrapper.client).publish({
+			id: payment.id,
+			orderId: payment.orderId,
+			stripeId: payment.stripeId,
+		});
+
+		res.status(201).send({ id: payment.id });
 	}
 );
 
