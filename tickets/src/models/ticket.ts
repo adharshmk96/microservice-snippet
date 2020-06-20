@@ -48,6 +48,14 @@ const ticketSchema = new mongoose.Schema(
 	}
 );
 
+// ticketSchema.pre('save', function (done) {
+// 	// @ts-ignore
+// 	this.$where = {
+// 		version: this.get('version') - 1,
+// 	};
+// 	done
+// });
+
 ticketSchema.set('versionKey', 'version');
 ticketSchema.plugin(updateIfCurrentPlugin);
 

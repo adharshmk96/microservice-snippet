@@ -1,28 +1,28 @@
 import mongoose from 'mongoose';
-import { OrderStatus } from '@adh-learns/common';
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
-import { TicketDoc } from './ticket';
-
-export { OrderStatus };
+import { OrderStatus } from '@adh-learns/common';
 
 interface OrderAttrs {
-	userId: string;
+	id: string;
 	status: OrderStatus;
-	expiresAt: Date;
-	ticket: TicketDoc;
+	version: number;
+	userId: string;
+	price: number;
 }
 
 interface OrderDoc extends mongoose.Document {
-	userId: string;
-	status: OrderStatus;
-	expiresAt: Date;
-	ticket: TicketDoc;
-	createdAt: string;
 	version: number;
+	userId: string;
+	price: number;
+	status: OrderStatus;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
 	build(attrs: OrderAttrs): OrderDoc;
+	findByEvent(event: {
+		id: string;
+		version: number;
+	}): Promise<OrderDoc | null>;
 }
 
 const orderSchema = new mongoose.Schema(
@@ -31,19 +31,15 @@ const orderSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		price: {
+			type: Number,
+			required: true,
+		},
 		status: {
 			type: String,
 			required: true,
 			enum: Object.values(OrderStatus),
 			default: OrderStatus.Created,
-		},
-		expiresAt: {
-			type: mongoose.Schema.Types.Date,
-			required: false,
-		},
-		ticket: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Ticket',
 		},
 	},
 	{
@@ -60,8 +56,28 @@ orderSchema.set('versionKey', 'version');
 orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.build = (attrs: OrderAttrs) => {
-	return new Order(attrs);
+	return new Order({
+		_id: attrs.id,
+		version: attrs.version,
+		price: attrs.price,
+		userId: attrs.userId,
+		status: attrs.status,
+	});
 };
+
+orderSchema.statics.findByEvent = (event: { id: string; version: number }) => {
+	return Order.findOne({
+		_id: event.id,
+		version: event.version - 1,
+	});
+};
+
+// ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
+// 	return Ticket.findOne({
+// 		_id: event.id,
+// 		version: event.version - 1,
+// 	});
+// };
 
 const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema);
 

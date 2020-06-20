@@ -37,6 +37,15 @@ build:
           - src: "src/**/*.ts"
             dest: .
 
+    - image: adharshmk96/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+
     - image: adharshmk96/tickets
       context: tickets
       docker:

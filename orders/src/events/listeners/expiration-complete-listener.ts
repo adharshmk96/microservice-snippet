@@ -21,12 +21,12 @@ export class ExpirationCompleteListener extends Listener<
 			throw new Error('Order not Found');
 		}
 		if (order.status === OrderStatus.Complete) {
-			return msg.ack(); 
+			return msg.ack();
 		}
 		order.set({
 			status: OrderStatus.Cancelled,
 		});
-		order.save();
+		await order.save();
 
 		new OrderCancelledPublisher(natsWrapper.client).publish({
 			id: order.id,

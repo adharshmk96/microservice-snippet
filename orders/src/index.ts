@@ -18,8 +18,8 @@ const start = async () => {
 	if (!process.env.NATS_CLIENT_ID) {
 		throw new Error('NATS_CLIENT_ID is not Defined');
 	}
-	if (!process.env.NATS_URI) {
-		throw new Error('NATS_URI is not Defined');
+	if (!process.env.NATS_URL) {
+		throw new Error('NATS_URL is not Defined');
 	}
 	try {
 		await mongoose.connect(process.env.MONGO_URI, {
@@ -32,7 +32,7 @@ const start = async () => {
 		await natsWrapper.connect(
 			process.env.NATS_CLUSTER_ID,
 			process.env.NATS_CLIENT_ID,
-			process.env.NATS_URI
+			process.env.NATS_URL
 		);
 		natsWrapper.client.on('close', () => {
 			console.log('NATS connection closed');
