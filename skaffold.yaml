@@ -28,6 +28,15 @@ build:
           - src: "**/*.js"
             dest: .
 
+    - image: adharshmk96/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+
     - image: adharshmk96/tickets
       context: tickets
       docker:
