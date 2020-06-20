@@ -4,6 +4,7 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { errorHandler, currentUser } from '@adh-learns/common';
 import { NotFoundError } from '@adh-learns/common';
+import { CreateChargeRouter } from './routes/new';
 
 const app = express();
 app.set('trust proxy', true);
@@ -12,11 +13,12 @@ app.use(
 	cookieSession({
 		signed: false,
 		// secure: process.env.NODE_ENV != 'test',
-		
 	})
 );
 
 app.use(currentUser);
+
+app.use(CreateChargeRouter);
 
 app.get('*', async (req, res) => {
 	throw new NotFoundError();
