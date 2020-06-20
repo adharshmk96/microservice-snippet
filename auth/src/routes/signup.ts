@@ -43,9 +43,9 @@ router.post(
 		);
 
 		// Store it on session object
-
+		// @ts-ignore
 		req.session = {
-			// isNew: true,
+			// isNew: false,
 			// isChanged: false,
 			// isPopulated:false,
 			jwt: userJwt,

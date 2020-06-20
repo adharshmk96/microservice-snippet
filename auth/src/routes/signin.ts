@@ -43,6 +43,7 @@ router.post(
 		);
 
 		// Store it on session object
+		// @ts-ignore
 		req.session = {
 			// isNew: true,
 			// isChanged: false,
