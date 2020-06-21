@@ -2,6 +2,7 @@ import { app } from './app';
 import mongoose from 'mongoose';
 
 const start = async () => {
+	console.log('Starting up');
 	if (!process.env.JWT_KEY) {
 		throw new Error('JWT_KEY is not Defined');
 	}
@@ -13,7 +14,7 @@ const start = async () => {
 		});
 		console.log('Connected to MongoDB');
 	} catch (err) {
-		console.log("This is happenning")
+		console.log('This is happenning');
 		console.error(err);
 	}
 
