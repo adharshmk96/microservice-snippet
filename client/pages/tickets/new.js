@@ -39,7 +39,7 @@ const NewTicket = () => {
                 </div>
                 <div className="form-group">
                     <label>Price</label>
-                    <input className="form-control" onBlur={onBlur} onChange={e => setPrice(e.target.value)} value={price} />
+                    <input type="number" className="form-control" onBlur={onBlur} onChange={e => setPrice(e.target.value)} value={price} />
                 </div>
                 {errors}
                 <button className="btn btn-primary">Submit</button>

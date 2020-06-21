@@ -1,11 +1,13 @@
 import buildClient from '../api/build-client';
 import axios from 'axios';
+import Link from 'next/link'
 
 const LandingPage = ({ tickets }) => {
     const ticketList = tickets.map(ticket => (
         <tr key={ticket.id}>
             <td>{ticket.title}</td>
             <td>{ticket.price}</td>
+            <td><Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}><a>View</a></Link></td>
         </tr>
     ))
     return (
@@ -16,6 +18,7 @@ const LandingPage = ({ tickets }) => {
                     <tr>
                         <th>Title</th>
                         <th>Price</th>
+                        <th>Link</th>
                     </tr>
                 </thead>
                 <tbody>
